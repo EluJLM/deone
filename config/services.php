@@ -15,11 +15,7 @@ return [
     */
 
     'postmark' => [
-        'key' => env('POSTMARK_API_KEY'),
-    ],
-
-    'resend' => [
-        'key' => env('RESEND_API_KEY'),
+        'token' => env('POSTMARK_TOKEN'),
     ],
 
     'ses' => [
@@ -28,11 +24,18 @@ return [
         'region' => env('AWS_DEFAULT_REGION', 'us-east-1'),
     ],
 
-    'slack' => [
-        'notifications' => [
-            'bot_user_oauth_token' => env('SLACK_BOT_USER_OAUTH_TOKEN'),
-            'channel' => env('SLACK_BOT_USER_DEFAULT_CHANNEL'),
-        ],
+    'resend' => [
+        'key' => env('RESEND_KEY'),
+    ],
+
+    'slack-notifications' => [
+        'bot_user_oauth_token' => env('SLACK_BOT_USER_OAUTH_TOKEN'),
+        'channel' => env('SLACK_BOT_USER_DEFAULT_CHANNEL'),
+    ],
+
+    'meta' => [
+        'app_id' => env('META_APP_ID'),
+        'app_secret' => env('META_APP_SECRET'),
     ],
 
 ];
