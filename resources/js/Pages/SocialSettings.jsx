@@ -35,6 +35,20 @@ export default function SocialSettings({ socialConnections }) {
         });
     };
 
+    const openMetaDialog = (platform) => {
+        const url = route('social-connections.oauth', platform);
+        const width = 620;
+        const height = 760;
+        const left = window.screenX + (window.outerWidth - width) / 2;
+        const top = window.screenY + (window.outerHeight - height) / 2;
+
+        window.open(
+            url,
+            `meta_oauth_${platform}`,
+            `popup=yes,width=${width},height=${height},left=${left},top=${top}`,
+        );
+    };
+
     return (
         <AuthenticatedLayout
             header={<h2 className="text-xl font-semibold leading-tight text-gray-800">Configuración de redes</h2>}
@@ -75,7 +89,7 @@ export default function SocialSettings({ socialConnections }) {
                             </div>
 
                             <div>
-                                <InputLabel htmlFor="access_token" value="Token de acceso" />
+                                <InputLabel htmlFor="access_token" value="Token de acceso (opcional si usas botón OAuth)" />
                                 <TextInput
                                     id="access_token"
                                     type="password"
@@ -100,18 +114,22 @@ export default function SocialSettings({ socialConnections }) {
                     </div>
 
                     <div className="rounded-lg bg-white p-6 shadow-sm">
-                        <h3 className="mb-4 text-lg font-semibold">Iniciar sesión u obtener token</h3>
+                        <h3 className="mb-4 text-lg font-semibold">Conectar con cuadro de inicio de sesión Meta</h3>
+                        <p className="mb-3 text-sm text-gray-600">
+                            Este botón abre un popup de Meta (Facebook/Instagram), autoriza permisos y guarda el token automáticamente.
+                        </p>
                         <div className="space-y-3 text-sm text-gray-700">
                             {PLATFORMS.map((platform) => (
                                 <div key={platform.key} className="rounded border p-3">
                                     <p className="font-medium text-gray-900">{platform.label}</p>
                                     <div className="mt-2 flex flex-wrap gap-3">
-                                        <a
-                                            href={route('social-connections.oauth', platform.key)}
+                                        <button
+                                            type="button"
+                                            onClick={() => openMetaDialog(platform.key)}
                                             className="rounded bg-indigo-600 px-3 py-1.5 text-white"
                                         >
                                             Iniciar sesión con {platform.label}
-                                        </a>
+                                        </button>
                                         <a
                                             href={platform.tokenHelp}
                                             target="_blank"

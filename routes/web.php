@@ -56,6 +56,7 @@ Route::middleware('auth')->group(function () {
 
     Route::post('/social-connections', [SocialConnectionController::class, 'store'])->name('social-connections.store');
     Route::get('/social-connections/{platform}/oauth', [SocialConnectionController::class, 'oauthRedirect'])->name('social-connections.oauth');
+    Route::get('/social-connections/{platform}/callback', [SocialConnectionController::class, 'oauthCallback'])->name('social-connections.callback');
     Route::post('/video-publications', [VideoPublicationController::class, 'store'])->name('video-publications.store');
 });
 
