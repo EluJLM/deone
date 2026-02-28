@@ -17,6 +17,8 @@ class VideoPublication extends Model
         'status',
         'facebook_status',
         'instagram_status',
+        'publish_to_facebook',
+        'publish_to_instagram',
         'result_message',
         'published_at',
     ];
@@ -24,6 +26,8 @@ class VideoPublication extends Model
     protected function casts(): array
     {
         return [
+            'publish_to_facebook' => 'boolean',
+            'publish_to_instagram' => 'boolean',
             'published_at' => 'datetime',
         ];
     }

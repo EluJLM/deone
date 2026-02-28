@@ -28,4 +28,16 @@ class SocialConnectionController extends Controller
 
         return back()->with('success', 'Cuenta conectada correctamente.');
     }
+
+    public function oauthRedirect(string $platform): RedirectResponse
+    {
+        $docs = [
+            'facebook' => 'https://developers.facebook.com/docs/facebook-login/guides/advanced/manual-flow/',
+            'instagram' => 'https://developers.facebook.com/docs/instagram-platform/instagram-api-with-instagram-login/',
+        ];
+
+        abort_unless(array_key_exists($platform, $docs), 404);
+
+        return redirect($docs[$platform]);
+    }
 }

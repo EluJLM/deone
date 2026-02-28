@@ -33,7 +33,7 @@ class VideoAutomationTest extends TestCase
         ]);
     }
 
-    public function test_uploaded_video_is_processed_against_configured_accounts(): void
+    public function test_uploaded_video_respects_selected_platform_checkboxes(): void
     {
         Storage::fake('public');
 
@@ -49,6 +49,8 @@ class VideoAutomationTest extends TestCase
         $response = $this->actingAs($user)->post(route('video-publications.store'), [
             'title' => 'Video de prueba',
             'video' => UploadedFile::fake()->create('video.mp4', 2048, 'video/mp4'),
+            'publish_to_facebook' => true,
+            'publish_to_instagram' => false,
         ]);
 
         $response->assertRedirect();
@@ -58,7 +60,9 @@ class VideoAutomationTest extends TestCase
             'title' => 'Video de prueba',
             'status' => 'published',
             'facebook_status' => 'published',
-            'instagram_status' => 'not_configured',
+            'instagram_status' => 'skipped',
+            'publish_to_facebook' => true,
+            'publish_to_instagram' => false,
         ]);
     }
 }

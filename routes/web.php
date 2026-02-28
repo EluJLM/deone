@@ -25,7 +25,7 @@ Route::get('/dashboard', function () {
         'videoPublications' => $user->videoPublications()
             ->latest()
             ->limit(10)
-            ->get(['id', 'title', 'status', 'facebook_status', 'instagram_status', 'result_message', 'created_at']),
+            ->get(['id', 'title', 'status', 'facebook_status', 'instagram_status', 'created_at']),
     ]);
 })->middleware(['auth', 'verified'])->name('dashboard');
 
@@ -33,7 +33,29 @@ Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+
+    Route::get('/social-settings', function () {
+        return Inertia::render('SocialSettings', [
+            'socialConnections' => auth()->user()->socialConnections()
+                ->get(['platform', 'account_label', 'is_enabled', 'last_connected_at']),
+        ]);
+    })->name('social-settings.index');
+
+    Route::get('/videos/upload', function () {
+        $user = auth()->user();
+
+        return Inertia::render('VideoUpload', [
+            'socialConnections' => $user->socialConnections()
+                ->get(['platform', 'account_label', 'is_enabled']),
+            'videoPublications' => $user->videoPublications()
+                ->latest()
+                ->limit(10)
+                ->get(['id', 'title', 'status', 'facebook_status', 'instagram_status', 'result_message', 'created_at']),
+        ]);
+    })->name('video-publications.create');
+
     Route::post('/social-connections', [SocialConnectionController::class, 'store'])->name('social-connections.store');
+    Route::get('/social-connections/{platform}/oauth', [SocialConnectionController::class, 'oauthRedirect'])->name('social-connections.oauth');
     Route::post('/video-publications', [VideoPublicationController::class, 'store'])->name('video-publications.store');
 });
 

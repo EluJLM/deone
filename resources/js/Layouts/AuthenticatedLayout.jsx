@@ -30,6 +30,18 @@ export default function AuthenticatedLayout({ header, children }) {
                                 >
                                     Dashboard
                                 </NavLink>
+                                <NavLink
+                                    href={route('social-settings.index')}
+                                    active={route().current('social-settings.index')}
+                                >
+                                    Redes
+                                </NavLink>
+                                <NavLink
+                                    href={route('video-publications.create')}
+                                    active={route().current('video-publications.create')}
+                                >
+                                    Subir video
+                                </NavLink>
                             </div>
                         </div>
 
@@ -61,9 +73,7 @@ export default function AuthenticatedLayout({ header, children }) {
                                     </Dropdown.Trigger>
 
                                     <Dropdown.Content>
-                                        <Dropdown.Link
-                                            href={route('profile.edit')}
-                                        >
+                                        <Dropdown.Link href={route('profile.edit')}>
                                             Profile
                                         </Dropdown.Link>
                                         <Dropdown.Link
@@ -133,6 +143,18 @@ export default function AuthenticatedLayout({ header, children }) {
                             active={route().current('dashboard')}
                         >
                             Dashboard
+                        </ResponsiveNavLink>
+                        <ResponsiveNavLink
+                            href={route('social-settings.index')}
+                            active={route().current('social-settings.index')}
+                        >
+                            Redes
+                        </ResponsiveNavLink>
+                        <ResponsiveNavLink
+                            href={route('video-publications.create')}
+                            active={route().current('video-publications.create')}
+                        >
+                            Subir video
                         </ResponsiveNavLink>
                     </div>
 

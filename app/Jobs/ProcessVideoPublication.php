@@ -26,18 +26,31 @@ class ProcessVideoPublication implements ShouldQueue
             ->where('is_enabled', true)
             ->keyBy('platform');
 
-        $facebookReady = $connections->has('facebook') && ! empty($connections['facebook']->access_token);
-        $instagramReady = $connections->has('instagram') && ! empty($connections['instagram']->access_token);
+        $facebookRequested = (bool) $publication->publish_to_facebook;
+        $instagramRequested = (bool) $publication->publish_to_instagram;
 
-        $publication->facebook_status = $facebookReady ? 'published' : 'not_configured';
-        $publication->instagram_status = $instagramReady ? 'published' : 'not_configured';
+        $facebookReady = $facebookRequested
+            && $connections->has('facebook')
+            && ! empty($connections['facebook']->access_token);
+
+        $instagramReady = $instagramRequested
+            && $connections->has('instagram')
+            && ! empty($connections['instagram']->access_token);
+
+        $publication->facebook_status = $facebookRequested
+            ? ($facebookReady ? 'published' : 'not_configured')
+            : 'skipped';
+
+        $publication->instagram_status = $instagramRequested
+            ? ($instagramReady ? 'published' : 'not_configured')
+            : 'skipped';
 
         $wasPublished = $facebookReady || $instagramReady;
 
         $publication->status = $wasPublished ? 'published' : 'failed';
         $publication->result_message = $wasPublished
-            ? 'Video enviado automáticamente a las cuentas configuradas.'
-            : 'No hay cuentas activas con token para publicar.';
+            ? 'Video enviado automáticamente a las cuentas seleccionadas.'
+            : 'No se pudo publicar: revisa redes seleccionadas y credenciales.';
         $publication->published_at = $wasPublished ? now() : null;
         $publication->save();
     }
